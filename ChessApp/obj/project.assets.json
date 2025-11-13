@@ -1476,19 +1476,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\manar\\.nuget\\packages\\": {}
+    "C:\\Users\\ayoub\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\manar\\Desktop\\chess\\CHESS\\ChessApp\\ChessApp.csproj",
+      "projectUniqueName": "C:\\Users\\ayoub\\OneDrive\\Documents\\programation\\C#\\Projet\\ChessApp\\CHESS\\ChessApp\\ChessApp.csproj",
       "projectName": "ChessApp",
-      "projectPath": "C:\\Users\\manar\\Desktop\\chess\\CHESS\\ChessApp\\ChessApp.csproj",
-      "packagesPath": "C:\\Users\\manar\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\manar\\Desktop\\chess\\CHESS\\ChessApp\\obj\\",
+      "projectPath": "C:\\Users\\ayoub\\OneDrive\\Documents\\programation\\C#\\Projet\\ChessApp\\CHESS\\ChessApp\\ChessApp.csproj",
+      "packagesPath": "C:\\Users\\ayoub\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ayoub\\OneDrive\\Documents\\programation\\C#\\Projet\\ChessApp\\CHESS\\ChessApp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\manar\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\ayoub\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -1511,7 +1511,8 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net8.0": {
@@ -1553,12 +1554,30 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[8.0.22, 8.0.22]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[8.0.22, 8.0.22]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[8.0.22, 8.0.22]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[8.0.22, 8.0.22]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.415/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.307/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

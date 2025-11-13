@@ -5,16 +5,94 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="ChessApp.Views.MainWindow"
-        x:DataType="vm:MainWindowViewModel"
+        x:DataType="vm:PlayerListViewModel"
+        Name="Root"
+        
         Icon="/Assets/avalonia-logo.ico"
         Title="ChessApp">
 
     <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
+        <vm:PlayerListViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <TabControl>
+        <TabItem Header="Joueur">
+            <Grid RowDefinitions="Auto, Auto, *" Margin="10">
+                <Expander Grid.Row="0" Header="Inscrire un nouveau joueur" Margin="0,0,0,10">
+                    <ScrollViewer MaxHeight="350">
+                        <StackPanel Margin="10">
 
-</Window>
+                            <TextBlock Text="Prénom:"/>
+                            <TextBox Text="{Binding NewPlayerFirstName}" Margin="0,5,0,0"/>
+
+                            <TextBlock Text="Nom:" Margin="0,10,0,0"/>
+                            <TextBox Text="{Binding NewPlayerLastName}" Margin="0,5,0,0"/>
+
+                            <TextBlock Text="Email:" Margin="0,10,0,0"/>
+                            <TextBox Text="{Binding NewPlayerEmail}" Margin="0,5,0,0">
+                                <TextBox.KeyBindings>
+                                    <KeyBinding Gesture="Enter" Command="{Binding AddPlayerCommand}" />
+                                </TextBox.KeyBindings>
+                            </TextBox>
+                            
+                            <Button Command="{Binding AddPlayerCommand}" HorizontalAlignment="Stretch" Margin="0,15,0,0">
+                                <StackPanel Orientation="Horizontal">
+                                    <PathIcon Data="{DynamicResource AcceptIconData}" Foreground="Green" />
+                                    <TextBlock Text="Inscrire le joueur" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </Expander>
+
+                <ListBox Grid.Row="2" ItemsSource="{Binding Players}"
+        
+                         BorderThickness="1" BorderBrush="Gray">
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="vm:PlayerViewModel">
+                            <Expander HorizontalAlignment="Stretch">
+
+                                <Expander.Header>
+                                    <Grid ColumnDefinitions="*, Auto">
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock FontWeight="Bold">
+                                                <Run Text="{Binding FirstName}"/> <Run Text="{Binding LastName}"/>
+                                            </TextBlock>
+                                            <TextBlock Text="{Binding Email}" FontSize="10" Foreground="Gray"/>
+                                        </StackPanel>
+
+                                        <Button Grid.Column="1"
+                                                VerticalAlignment="Center"
+                                                Margin="10,0,0,0"
+                                                Command="{Binding #Root.DataContext.RemovePlayerCommand}"
+                                                CommandParameter="{Binding .}">
+                                            <PathIcon Data="{DynamicResource DeleteIconData}" Height="15" Foreground="Red" />
+                                        </Button>
+                                    </Grid>
+                                </Expander.Header>
+
+                                <StackPanel Margin="15,10,15,10">
+
+                                    <TextBlock Text="Prénom:"/>
+                                    <TextBox Text="{Binding FirstName, Mode=TwoWay}" Margin="0,5,0,0"/>
+
+                                    <TextBlock Text="Nom:" Margin="0,10,0,0"/>
+                                    <TextBox Text="{Binding LastName, Mode=TwoWay}" Margin="0,5,0,0"/>
+
+                                    <TextBlock Text="Email:" Margin="0,10,0,0"/>
+                                    <TextBox Text="{Binding Email, Mode=TwoWay}" Margin="0,5,0,0"/>
+
+                                </StackPanel>
+                            </Expander>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </TabItem>
+        <TabItem Header="compétition">
+            <TextBlock Text="La gestion des compétition sera ici" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </TabItem>
+
+    </TabControl> </Window>
