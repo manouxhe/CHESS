@@ -20,6 +20,8 @@ public partial class PlayerListViewModel : ViewModelBase
     {
 
         _game = new Gamechess();
+        NewPlayerRankName = _game.DefaultRankName;
+        NewPlayerRankValue = _game.DefaultRankStartValue.ToString();
 
 
         // Données pour le designer Avalonia, comme dans la ToDoList
@@ -32,6 +34,8 @@ public partial class PlayerListViewModel : ViewModelBase
                 Email = "magnus@chess.com",
 
             };
+            p1.Rankings.Add("ELO_FIDE", new Eloranking("ELO FIDE", 2830));
+
 
 
             var p2 = new Chessplayer()
@@ -41,6 +45,8 @@ public partial class PlayerListViewModel : ViewModelBase
                 Email = "hika@chess.com",
 
             };
+            p2.Rankings.Add("ELO_FIDE", new Eloranking("ELO FIDE", 2780));
+
 
 
             _allPlayers.Add(new PlayerViewModel(p1));
@@ -52,6 +58,8 @@ public partial class PlayerListViewModel : ViewModelBase
     public PlayerListViewModel(Game game)
     {
         _game = game;
+        NewPlayerRankName = _game.DefaultRankName;
+        NewPlayerRankValue = _game.DefaultRankStartValue.ToString();
 
 
     }
@@ -67,6 +75,13 @@ public partial class PlayerListViewModel : ViewModelBase
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AddPlayerCommand))]
     private string? _newPlayerEmail;
+    [ObservableProperty]
+    private string? _newPlayerRankName;
+
+    
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(AddPlayerCommand))]
+    private string? _newPlayerRankValue;
 
     [RelayCommand(CanExecute = nameof(CanAddPlayer))]
     private void AddPlayer()
@@ -78,18 +93,19 @@ public partial class PlayerListViewModel : ViewModelBase
         _allPlayers.Add(newPlayerVM);
 
         NewPlayerFirstName = NewPlayerLastName = NewPlayerEmail = null;
+        NewPlayerRankValue = _game.DefaultRankStartValue.ToString();
     }
 
     private bool CanAddPlayer() =>
             !string.IsNullOrWhiteSpace(NewPlayerFirstName) &&
             !string.IsNullOrWhiteSpace(NewPlayerLastName);
-
+    
     [RelayCommand]
     private void RemovePlayer(PlayerViewModel player)
     {
         if (player == null) return;
 
-
+       
         _allPlayers.Remove(player);
     }
 
