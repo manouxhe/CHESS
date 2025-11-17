@@ -1,26 +1,55 @@
+using System.Collections.Generic;
+using System.Linq;
 using ChessApp.Models;
+using ChessApp.ViewModels;
+
 
 namespace ChessApp.Service;
 
 public class Gamechess : Game
 {
-    private string DefaultEloName = "ELO";
-    private int DefaultEloValue = 400;
-
-    public string DefaultRankName => DefaultEloName;
-    public int DefaultRankStartValue => DefaultEloValue;
-
-    public Player CreatePlayer(string? firstName, string? lastName, string? email)
+    public List<FieldViewModel> GetFields()
     {
-        var player = new Chessplayer()
+        return new List<FieldViewModel>
+        {
+            // Champ 1 Identifiant FIDE
+            new FieldViewModel(
+                key: "fide_id",
+                displayName: "FIDE ID",
+                defaultValue: "Inconnu"
+            ),
+
+            // Champ 2 Classement ELO initial
+            new FieldViewModel(
+                key: "initial_elo",
+                displayName: "ELO Initial",
+                defaultValue: "400"
+            )
+        };
+    }
+    public Player CreatePlayer(string? firstName, string? lastName, string? email, List<FieldViewModel> customFields)
+    {
+
+        
+        string fideid = customFields.FirstOrDefault(f => f.Key == "fide_id")?.Value ?? "Inconnu";
+        int elo = int.TryParse(customFields.FirstOrDefault(f => f.Key == "initial_elo")?.Value, out var e) ? e : 1200;
+
+        var fields = new List<Playercustomfield>
+        {
+            new Fideidfield(fideid) 
+            // Ex: on pourrait plus tard ajouter new ClubAttribute("Nom du club")
+        };
+
+        
+        var player = new Chessplayer(fields)
         {
             FirstName = firstName,
             LastName = lastName,
             Email = email
         };
-        player.Rankings.Add(DefaultEloName, new Eloranking(DefaultEloName, DefaultEloValue));
 
-        //player.Rankings.Add("ELO_FIDE", new Eloranking("ELO", 400));
+        //Ajout du classement initial (ELO FIDE)
+        player.Rankings.Add("ELO_FIDE", new Eloranking("ELO FIDE", elo ));
 
         return player;
     }

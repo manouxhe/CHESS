@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Linq;
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -9,24 +10,27 @@ namespace ChessApp.ViewModels;
 
 public partial class PlayerListViewModel : ViewModelBase
 {
-    private readonly Game _game;      // Fabrique de joueurs et comparateurs (dépend du jeu : échecs, tennis, etc.)
+    private readonly Game _game;      // Fabrique de joueurs
 
 
     // Collection complète
     private readonly ObservableCollection<PlayerViewModel> _allPlayers = new();
+     public ObservableCollection<FieldViewModel> CustomFields { get; } = new();
+
     public ObservableCollection<PlayerViewModel> Players => _allPlayers;
 
     public PlayerListViewModel()
     {
 
         _game = new Gamechess();
-        NewPlayerRankName = _game.DefaultRankName;
-        NewPlayerRankValue = _game.DefaultRankStartValue.ToString();
+        
 
 
         // Données pour le designer Avalonia, comme dans la ToDoList
         if (Design.IsDesignMode)
         {
+            foreach (var field in _game.GetFields())
+                CustomFields.Add(field);
             var p1 = new Chessplayer()
             {
                 FirstName = "Magnus (Design)",
@@ -58,8 +62,10 @@ public partial class PlayerListViewModel : ViewModelBase
     public PlayerListViewModel(Game game)
     {
         _game = game;
-        NewPlayerRankName = _game.DefaultRankName;
-        NewPlayerRankValue = _game.DefaultRankStartValue.ToString();
+        foreach (var field in _game.GetFields())
+        {
+            CustomFields.Add(field);
+        }
 
 
     }
@@ -78,7 +84,6 @@ public partial class PlayerListViewModel : ViewModelBase
     [ObservableProperty]
     private string? _newPlayerRankName;
 
-    
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AddPlayerCommand))]
     private string? _newPlayerRankValue;
@@ -87,13 +92,15 @@ public partial class PlayerListViewModel : ViewModelBase
     private void AddPlayer()
     {
         var newPlayerModel = _game.CreatePlayer(
-           NewPlayerFirstName, NewPlayerLastName, NewPlayerEmail
+           NewPlayerFirstName, NewPlayerLastName, NewPlayerEmail, CustomFields.ToList()
        );
         var newPlayerVM = new PlayerViewModel(newPlayerModel);
         _allPlayers.Add(newPlayerVM);
 
         NewPlayerFirstName = NewPlayerLastName = NewPlayerEmail = null;
-        NewPlayerRankValue = _game.DefaultRankStartValue.ToString();
+        foreach (var field in CustomFields) field.Reset();
+
+
     }
 
     private bool CanAddPlayer() =>
