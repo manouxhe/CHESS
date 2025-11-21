@@ -60,7 +60,22 @@
                     </ScrollViewer>
                 </Expander>
 
-                <ListBox Grid.Row="2" ItemsSource="{Binding Players}"
+                <Grid Grid.Row="1" ColumnDefinitions="*, Auto" Margin="0,0,0,10">
+                    <TextBox Grid.Column="0"
+                             Text="{Binding SearchText, Mode=TwoWay}"
+                             Watermark="Rechercher par nom ou prénom..."
+                             Margin="0,0,10,0">
+                        <TextBox.KeyBindings>
+                            <KeyBinding Gesture="Enter" Command="{Binding SearchCommand}" />
+                        </TextBox.KeyBindings>
+                    </TextBox>
+
+                    <Button Grid.Column="1" 
+                            Content="Rechercher" 
+                            Command="{Binding SearchCommand}"/>
+                </Grid>
+
+                <ListBox Grid.Row="2" ItemsSource="{Binding FilteredPlayers}"
                          BorderThickness="1" BorderBrush="Gray">
 
                     <ListBox.ItemTemplate>
