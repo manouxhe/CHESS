@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ChessApp.Models;
 using ChessApp.Service;
+using System.ComponentModel.DataAnnotations;
 
 namespace ChessApp.ViewModels;
 
@@ -56,6 +57,15 @@ public partial class PlayerListViewModel : ViewModelBase
         _game = game;
         foreach (var field in _game.GetFields())
         {
+            field.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(FieldViewModel.Value))
+                    AddPlayerCommand.NotifyCanExecuteChanged();
+            };
+
+            // 2. Si une erreur de validation apparait/disparait (ex: "Ce doit être un nombre")
+            field.ErrorsChanged += (s, e) => AddPlayerCommand.NotifyCanExecuteChanged();
+
             CustomFields.Add(field);
         }
         RefreshFilteredList();
@@ -87,14 +97,21 @@ public partial class PlayerListViewModel : ViewModelBase
     }
 
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Le prénom est requis.")]
     [NotifyCanExecuteChangedFor(nameof(AddPlayerCommand))]
     private string? _newPlayerFirstName;
 
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Le nom est requis.")]
     [NotifyCanExecuteChangedFor(nameof(AddPlayerCommand))]
     private string? _newPlayerLastName;
 
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "L'email est requis.")]
+    [EmailAddress(ErrorMessage = "Format d'email invalide.")] // Vérifie @ 
     [NotifyCanExecuteChangedFor(nameof(AddPlayerCommand))]
     private string? _newPlayerEmail;
 
@@ -119,9 +136,18 @@ public partial class PlayerListViewModel : ViewModelBase
         foreach (var field in CustomFields) field.Reset();
     }
 
-    private bool CanAddPlayer() =>
-            !string.IsNullOrWhiteSpace(NewPlayerFirstName) &&
-            !string.IsNullOrWhiteSpace(NewPlayerLastName);
+    private bool CanAddPlayer()
+    {
+        bool mainFieldsOK = !string.IsNullOrWhiteSpace(NewPlayerFirstName) &&
+                        !string.IsNullOrWhiteSpace(NewPlayerLastName) &&
+                        !string.IsNullOrWhiteSpace(NewPlayerEmail) &&
+                        !HasErrors;
+
+
+        bool customFieldsOK = CustomFields.All(f => !string.IsNullOrWhiteSpace(f.Value) && !f.HasErrors);
+
+        return mainFieldsOK && customFieldsOK;
+    }
 
     [RelayCommand]
     private void RemovePlayer(PlayerViewModel player)

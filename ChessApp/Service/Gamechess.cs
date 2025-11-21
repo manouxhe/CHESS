@@ -16,21 +16,23 @@ public class Gamechess : Game
             new FieldViewModel(
                 key: "fide_id",
                 displayName: "FIDE ID",
-                defaultValue: "Inconnu"
+                defaultValue: "",
+                isNumeric: true
             ),
 
             // Champ 2 Classement ELO initial
             new FieldViewModel(
                 key: "initial_elo",
                 displayName: "ELO Initial",
-                defaultValue: "400"
+                defaultValue: "400",
+                isNumeric: true
             )
         };
     }
     public Player CreatePlayer(string? firstName, string? lastName, string? email, List<FieldViewModel> customFields)
     {
 
-        
+
         string fideid = customFields.FirstOrDefault(f => f.Key == "fide_id")?.Value ?? "Inconnu";
         int elo = int.TryParse(customFields.FirstOrDefault(f => f.Key == "initial_elo")?.Value, out var e) ? e : 1200;
 
@@ -40,7 +42,7 @@ public class Gamechess : Game
             // Ex: on pourrait plus tard ajouter new ClubAttribute("Nom du club")
         };
 
-        
+
         var player = new Chessplayer(fields)
         {
             FirstName = firstName,
@@ -49,7 +51,7 @@ public class Gamechess : Game
         };
 
         //Ajout du classement initial (ELO FIDE)
-        player.Rankings.Add("ELO_FIDE", new Eloranking("ELO FIDE", elo ));
+        player.Rankings.Add("ELO_FIDE", new Eloranking("ELO FIDE", elo));
 
         return player;
     }

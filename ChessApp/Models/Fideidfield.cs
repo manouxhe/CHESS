@@ -9,6 +9,7 @@ public class Fideidfield : Playercustomfield
     public string DisplayName => "FIDE ID";
 
     public string? Value { get; set; }
+    public bool IsNumeric => true;
 
     public Fideidfield(string? value = null)
     {
