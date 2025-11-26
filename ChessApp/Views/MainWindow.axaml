@@ -38,6 +38,9 @@
                                 </TextBox.KeyBindings>
                             </TextBox>
                             
+                            <TextBlock Text="Date de naissance:" Margin="0,10,0,0"/>
+                            <DatePicker SelectedDate="{Binding NewPlayerBirthDate}" HorizontalAlignment="Stretch" Margin="0,5,0,0"/>
+                            
                             <ItemsControl ItemsSource="{Binding CustomFields}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate DataType="vm:FieldViewModel">
@@ -111,6 +114,16 @@
 
                                     <TextBlock Text="Email:" Margin="0,10,0,0"/>
                                     <TextBox Text="{Binding Email, Mode=TwoWay}" Margin="0,5,0,0"/>
+
+                                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                        <TextBlock Text="Né(e) le: " VerticalAlignment="Center"/>
+                                        <DatePicker SelectedDate="{Binding BirthDate}" />
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                        <TextBlock Text="Parties jouées: " FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding MatchCount}" Margin="5,0,0,0"/>
+                                    </StackPanel>
 
                                     <TextBlock Text="Classements:" FontWeight="Bold" Margin="0,15,0,0"/>
                                     <ItemsControl ItemsSource="{Binding Rankings}">

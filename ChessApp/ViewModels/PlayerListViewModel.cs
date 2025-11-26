@@ -116,6 +116,12 @@ public partial class PlayerListViewModel : ViewModelBase
     private string? _newPlayerEmail;
 
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "La date de naissance est requise.")]
+    [NotifyCanExecuteChangedFor(nameof(AddPlayerCommand))]
+    private DateTimeOffset? _newPlayerBirthDate;
+
+    [ObservableProperty]
     private string? _newPlayerRankName;
 
     [ObservableProperty]
@@ -125,14 +131,17 @@ public partial class PlayerListViewModel : ViewModelBase
     [RelayCommand(CanExecute = nameof(CanAddPlayer))]
     private void AddPlayer()
     {
+        DateTime birthDate = NewPlayerBirthDate?.DateTime ?? DateTime.Now;
         var newPlayerModel = _game.CreatePlayer(
-           NewPlayerFirstName, NewPlayerLastName, NewPlayerEmail, CustomFields.ToList()
+            
+           NewPlayerFirstName, NewPlayerLastName, NewPlayerEmail, birthDate, CustomFields.ToList()
         );
         var newPlayerVM = new PlayerViewModel(newPlayerModel);
         _allPlayers.Add(newPlayerVM);
         RefreshFilteredList(SearchText);
 
         NewPlayerFirstName = NewPlayerLastName = NewPlayerEmail = null;
+        NewPlayerBirthDate = null;
         foreach (var field in CustomFields) field.Reset();
     }
 
@@ -141,6 +150,7 @@ public partial class PlayerListViewModel : ViewModelBase
         bool mainFieldsOK = !string.IsNullOrWhiteSpace(NewPlayerFirstName) &&
                         !string.IsNullOrWhiteSpace(NewPlayerLastName) &&
                         !string.IsNullOrWhiteSpace(NewPlayerEmail) &&
+                        NewPlayerBirthDate != null &&
                         !HasErrors;
 
 

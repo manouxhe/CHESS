@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using ChessApp.Models;
 using ChessApp.ViewModels;
@@ -16,7 +17,7 @@ public interface Game
     // valeur par défaut
 
     List<FieldViewModel> GetFields();
-    Player CreatePlayer(string? firstName, string? lastName, string? email, List<FieldViewModel> customFields); // les champs personnalisés définis par GetFields().
+    Player CreatePlayer(string? firstName, string? lastName, string? email, DateTime birthDate, List<FieldViewModel> customFields); // les champs personnalisés définis par GetFields().
 
 
 }

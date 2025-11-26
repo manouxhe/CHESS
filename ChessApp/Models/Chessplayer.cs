@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace ChessApp.Models;
@@ -23,6 +24,8 @@ public class Chessplayer : Player
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     public string? Email { get; set; }
+    public int MatchCount { get; set; } = 0;
+    public DateTime BirthDate { get; set; }
 
     // Ensemble des classements associés à ce joueur (ELO, Blitz, etc.)
     // La clé est le nom du classement, la valeur est un objet Ranking.

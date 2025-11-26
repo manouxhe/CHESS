@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using ChessApp.Models;
 using ChessApp.Service;
 using System.ComponentModel.DataAnnotations;
+using System;
 
 namespace ChessApp.ViewModels;
 
@@ -22,6 +23,21 @@ public partial class PlayerViewModel : ViewModelBase
     [NotifyDataErrorInfo]
     [EmailAddress(ErrorMessage = "Email invalide.")]
     private string? _email;
+    public int MatchCount
+    {
+        get => _playerModel.MatchCount;
+        set
+        {
+            if (_playerModel.MatchCount != value)
+            {
+                _playerModel.MatchCount = value;
+            }
+        }
+    }
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Date requise")]
+    private DateTimeOffset? _birthDate;
     public ObservableCollection<RankingViewModel> Rankings { get; } = new();
     public ObservableCollection<PlayercustomfieldViewModel> Fields { get; } = new();
 
@@ -33,6 +49,7 @@ public partial class PlayerViewModel : ViewModelBase
         _firstName = _playerModel.FirstName;
         _lastName = _playerModel.LastName;
         _email = _playerModel.Email;
+        _birthDate = new DateTimeOffset(_playerModel.BirthDate);
 
         Rankings.Clear();
         foreach (var rankModel in _playerModel.Rankings.Values)

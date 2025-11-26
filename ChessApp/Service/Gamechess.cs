@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using ChessApp.Models;
@@ -29,7 +30,7 @@ public class Gamechess : Game
             )
         };
     }
-    public Player CreatePlayer(string? firstName, string? lastName, string? email, List<FieldViewModel> customFields)
+    public Player CreatePlayer(string? firstName, string? lastName, string? email, DateTime birthDate, List<FieldViewModel> customFields)
     {
 
 
@@ -47,7 +48,9 @@ public class Gamechess : Game
         {
             FirstName = firstName,
             LastName = lastName,
-            Email = email
+            Email = email,
+            BirthDate = birthDate,
+            MatchCount = 0
         };
 
         //Ajout du classement initial (ELO FIDE)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace ChessApp.Models;
@@ -10,6 +11,8 @@ public interface Player
 
     
     string? Email { get; set; }
+    int MatchCount { get; set; }
+    DateTime BirthDate { get; set; } 
 
     // Dictionnaire des classements (ELO, ATP, etc.)
     //   Rankings["ELO_FIDE"] = new EloRanking("ELO FIDE", 2500);
