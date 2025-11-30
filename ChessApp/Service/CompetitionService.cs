@@ -15,10 +15,10 @@ public class CompetitionService : ICompetitionService
     {
         // creer la nouvelle compet
         var newComp = new Competition(name, date, location);
-        
+
         // on l'ajoute a la liste interne
         _competitions.Add(newComp);
-        
+
         // renv pour pouvoir l'utiliser direct
         return newComp;
     }

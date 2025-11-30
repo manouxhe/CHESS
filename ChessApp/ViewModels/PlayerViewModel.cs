@@ -4,6 +4,7 @@ using ChessApp.Models;
 using ChessApp.Service;
 using System.ComponentModel.DataAnnotations;
 using System;
+using System.ComponentModel;
 
 namespace ChessApp.ViewModels;
 
@@ -11,6 +12,8 @@ public partial class PlayerViewModel : ViewModelBase
 {
 
     private readonly Player _playerModel;
+    private readonly Action? _onInfoChanged; //pour notifier un changement
+
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Le prénom est requis.")]
@@ -42,9 +45,10 @@ public partial class PlayerViewModel : ViewModelBase
     public ObservableCollection<PlayercustomfieldViewModel> Fields { get; } = new();
 
 
-    public PlayerViewModel(Player playerModel)
+    public PlayerViewModel(Player playerModel, Action? onInfoChanged = null)
     {
         _playerModel = playerModel;
+        _onInfoChanged = onInfoChanged;
 
         _firstName = _playerModel.FirstName;
         _lastName = _playerModel.LastName;
@@ -55,6 +59,12 @@ public partial class PlayerViewModel : ViewModelBase
         foreach (var rankModel in _playerModel.Rankings.Values)
         {
             var rankViewModel = new RankingViewModel(rankModel);
+            // Si un ELO change, on appelle l'action du parent
+            rankViewModel.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(RankingViewModel.StringValue))
+                    _onInfoChanged?.Invoke();
+            };
 
             Rankings.Add(rankViewModel);
         }
@@ -68,6 +78,18 @@ public partial class PlayerViewModel : ViewModelBase
         ValidateAllProperties();
     }
 
+    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
 
+        if (e.PropertyName == nameof(BirthDate) && BirthDate.HasValue)
+            _playerModel.BirthDate = BirthDate.Value.DateTime;
+
+        // Si le nom change (ordre alphabétique du classement), on prévient le parent
+        if (e.PropertyName == nameof(FirstName) || e.PropertyName == nameof(LastName))
+        {
+            _onInfoChanged?.Invoke();
+        }
+    }
 }
 
