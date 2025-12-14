@@ -10,7 +10,7 @@ public class Match
     public Player? WhitePlayer { get; set; }  //peut être null au début car peut pas predire joueur qui y sera
     public Player? BlackPlayer { get; set; }
 
-    public string Result { get; set; } = "Not played"; 
+    public string Result { get; set; } = "Not played";
     // par défaut
 
     public List<string> Moves { get; set; } = new List<string>();   //stocker chaque moov sous forme de texte position pion (match.Moves.Add("e4");)

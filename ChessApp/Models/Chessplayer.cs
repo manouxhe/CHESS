@@ -11,7 +11,7 @@ public class Eloranking : Ranking
     // Valeur numérique du classement
     public int Value { get; set; }
 
-   
+
     public Eloranking(string name, int value = 400)
     {
         Name = name;
@@ -34,8 +34,8 @@ public class Chessplayer : Player
     public List<Playercustomfield> Fields { get; }
 
     public Chessplayer(IEnumerable<Playercustomfield>? fields = null)
-        {
-            // Si aucune liste n’est fournie, on crée une liste vide.
-            Fields = new List<Playercustomfield>(fields ?? new List<Playercustomfield>());
-        }
+    {
+        // Si aucune liste n’est fournie, on crée une liste vide.
+        Fields = new List<Playercustomfield>(fields ?? new List<Playercustomfield>());
+    }
 }

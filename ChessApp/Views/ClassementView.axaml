@@ -1,0 +1,67 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:ChessApp.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ChessApp.Views.ClassementView"
+             x:DataType="vm:ClassementViewModel">
+
+    <Grid RowDefinitions="Auto, Auto, Auto, *">
+        
+        <TextBlock Grid.Row="0" 
+                   Text="{Binding CategoryName, StringFormat='🏆 Classement {0}'}" 
+                   FontSize="24" FontWeight="Bold" 
+                   HorizontalAlignment="Center" Margin="20"/>
+
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding Categories}" HorizontalAlignment="Center" Margin="0,0,0,15">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" Spacing="10"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Button Content="{Binding Key}" 
+                            Command="{Binding $parent[UserControl].((vm:ClassementViewModel)DataContext).ChangeCategoryCommand}"
+                            CommandParameter="{Binding Value}"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <Grid Grid.Row="2" ColumnDefinitions="*, Auto" Margin="10,0,10,10" MaxWidth="500" HorizontalAlignment="Center">
+            <TextBox Grid.Column="0"
+                     Text="{Binding SearchText, Mode=TwoWay}"
+                     Watermark="Rechercher par nom ou position..."
+                     Margin="0,0,10,0"
+                     Width="300"> <TextBox.KeyBindings>
+                    <KeyBinding Gesture="Enter" Command="{Binding SearchCommand}" />
+                </TextBox.KeyBindings>
+            </TextBox>
+
+            <Button Grid.Column="1" 
+                    Content="Rechercher" 
+                    Command="{Binding SearchCommand}"/>
+        </Grid>
+
+        <ListBox Grid.Row="3" ItemsSource="{Binding Items}" Background="Transparent" Margin="10">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="vm:ClassementItemViewModel">
+                    <Border BorderBrush="LightGray" BorderThickness="0,0,0,1" Padding="10">
+                        <Grid ColumnDefinitions="Auto, *, Auto">
+                            <Border Grid.Column="0" Width="40" Height="40" CornerRadius="20" Background="#333" Margin="0,0,15,0">
+                                <TextBlock Text="{Binding Position}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="18" Foreground="White"/>
+                            </Border>
+                            <TextBlock Grid.Column="1" Text="{Binding PlayerName}" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="Score:" Foreground="Gray" Margin="0,0,5,0" VerticalAlignment="Bottom"/>
+                                <TextBlock Text="{Binding Score}" FontWeight="Bold" FontSize="20" Margin="5,0,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        
+    </Grid>
+</UserControl>

@@ -19,6 +19,13 @@ public partial class PlayerListViewModel : ViewModelBase
     private readonly ObservableCollection<PlayerViewModel> _allPlayers = new();
     public ObservableCollection<FieldViewModel> CustomFields { get; } = new();
     public ObservableCollection<PlayerViewModel> FilteredPlayers { get; } = new();
+    public ClassementViewModel ClassementVM { get; } = new ClassementViewModel(new ChessClassement());
+
+    // La méthode passée en Action aux enfants
+    private void OnPlayerInfoChanged()
+    {
+        UpdateClassement();
+    }
 
     public PlayerListViewModel()
     {
@@ -49,6 +56,7 @@ public partial class PlayerListViewModel : ViewModelBase
             _allPlayers.Add(new PlayerViewModel(p1));
             _allPlayers.Add(new PlayerViewModel(p2));
             RefreshFilteredList();
+            UpdateClassement();
         }
     }
 
@@ -63,12 +71,13 @@ public partial class PlayerListViewModel : ViewModelBase
                     AddPlayerCommand.NotifyCanExecuteChanged();
             };
 
-            // 2. Si une erreur de validation apparait/disparait (ex: "Ce doit être un nombre")
+
             field.ErrorsChanged += (s, e) => AddPlayerCommand.NotifyCanExecuteChanged();
 
             CustomFields.Add(field);
         }
         RefreshFilteredList();
+        UpdateClassement();
     }
 
     [ObservableProperty]
@@ -133,13 +142,13 @@ public partial class PlayerListViewModel : ViewModelBase
     {
         DateTime birthDate = NewPlayerBirthDate?.DateTime ?? DateTime.Now;
         var newPlayerModel = _game.CreatePlayer(
-            
+
            NewPlayerFirstName, NewPlayerLastName, NewPlayerEmail, birthDate, CustomFields.ToList()
         );
-        var newPlayerVM = new PlayerViewModel(newPlayerModel);
+        var newPlayerVM = new PlayerViewModel(newPlayerModel, OnPlayerInfoChanged);
         _allPlayers.Add(newPlayerVM);
         RefreshFilteredList(SearchText);
-
+        UpdateClassement();
         NewPlayerFirstName = NewPlayerLastName = NewPlayerEmail = null;
         NewPlayerBirthDate = null;
         foreach (var field in CustomFields) field.Reset();
@@ -166,5 +175,10 @@ public partial class PlayerListViewModel : ViewModelBase
 
         _allPlayers.Remove(player);
         FilteredPlayers.Remove(player);
+        UpdateClassement();
+    }
+    private void UpdateClassement()
+    {
+        ClassementVM.Refresh(_allPlayers);
     }
 }

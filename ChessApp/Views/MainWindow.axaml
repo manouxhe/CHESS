@@ -162,6 +162,10 @@
             </Grid>
         </TabItem>
 
+        <TabItem Header="Classement">
+            <ContentControl Content="{Binding ClassementVM}" />
+        </TabItem>
+
         <TabItem Header="Compétition">
             <TextBlock Text="La gestion des compétitions sera ici" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </TabItem>
