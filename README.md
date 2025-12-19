@@ -52,14 +52,14 @@ S : Principe de Responsabilité Unique
 Ce principe dit qu’une classe ne doit avoir qu’une seule raison de changer donc une seule responsabilité.
 
 Dans notre projet :
-	- Les Models représentent uniquement les données 
-	- Les ViewModels gèrent la logique applicative et l’état de l’interface.
-	- Les Views s’occupent de l’affichage et à l’interaction utilisateur.
+- Les Models représentent uniquement les données 
+- Les ViewModels gèrent la logique applicative et l’état de l’interface.
+- Les Views s’occupent de l’affichage et à l’interaction utilisateur.
 
 O : Principe Ouvert/Fermé (OCP)
 Ce principe indique qu’une entité logicielle doit être ouverte à l’extension, mais fermée à la modification.
 Dans notre projet :
-	- 	L’ajout de nouvelles informations sur les joueurs se fait via des champs personnalisés, sans modifier la classe principale.
+- 	L’ajout de nouvelles informations sur les joueurs se fait via des champs personnalisés, sans modifier la classe principale.
 
 
 ## Conclusion 
