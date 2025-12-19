@@ -19,9 +19,9 @@ L’objectif principal est de permettre une structure de gestion organisée des 
 L’application a été développée en C#, en utilisant le framework Avalonia UI pour l’interface graphique et sur l l’architecture MVVM (Model–View–ViewModel).
 Nous avons également ajouter une base de données  SQLite, gérée via Entity Framework Core permettant la conservation des données.
 Cette base de données permet d’enregistrer de manière persistante les informations telles que  :
-	•	les joueurs,
-	•	les compétions ,
-	•	les matchs.
+	- les joueurs
+	- les compétions
+	- les matchs
 
 Un contexte de base de données (le fichier : ChessDbContext) permet cela, il centralise l’accès aux données et définir quelles entités sera conservée dans les tables. 
 Les données ne sont donc plus stockées juste en mémoire (perdues à la fermeture de l’application), mais conservées entre les différentes exécutions de l’application.
