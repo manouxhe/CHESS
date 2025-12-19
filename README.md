@@ -31,9 +31,9 @@ Elle permet de filtrer rapidement les joueurs à partir de leur nom, améliorant
 La logique de recherche est gérée dans les ViewModels, conformément à l’architecture MVV.
 
 ## Adaptabilité du projet à une autre fédération
-Notre projet a été conçu de manière à être facilement adaptable à une autre fédération d’échecs (ou à une organisation du même type).
-
-Plusieurs points justifient cela :
+Notre projet a été conçu de manière à être facilement adaptable à une autre fédération d’échecs (ou à une organisation du même type). Principalement grace à nos interfaces.
+Nos viewsmodels ne mentionnent aucune discipline en particulier car les classes de ce dossier sont reliés aux interfaces qui elles sont générales. Il faudra donc rajouter les classes qu'il manque sous chaque interface et changer les termes echecs dans le MainWindow.axaml.cs 
+Plusieurs autres points justifient cela :
 - Modèle générique :
 Les entités principales (joueurs, compétitions, matchs) sont indépendantes des règles spécifiques à une fédération donnée.
 - Champs personnalisables :
@@ -66,3 +66,9 @@ Dans notre projet :
 
 Pour conclure le projet a permis de créer une application structurée répondant à des besoins concrets de gestion dans le domaine des échecs.
 Grâce à l’utilisation de C#, Avalonia, SQLite, Entity Framework Core et au respect de principes de conception tels que MVVM et SOLID. Ce projet présente d'excellentes qualités de maintenabilité et d’adaptabilité.
+
+## Bibliothèques utilisées
+
+- C# 
+- Avalonia
+-SQLite
