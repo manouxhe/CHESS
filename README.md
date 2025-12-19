@@ -79,4 +79,4 @@ Grâce à l’utilisation de C#, Avalonia, SQLite, Entity Framework Core et au r
 
 - C# 
 - Avalonia
--SQLite
+- SQLite
