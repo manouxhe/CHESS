@@ -34,13 +34,13 @@ La logique de recherche est gérée dans les ViewModels, conformément à l’ar
 Notre projet a été conçu de manière à être facilement adaptable à une autre fédération d’échecs (ou à une organisation du même type).
 
 Plusieurs points justifient cela :
-	•	Modèle générique :
+- Modèle générique :
 Les entités principales (joueurs, compétitions, matchs) sont indépendantes des règles spécifiques à une fédération donnée.
-	•	Champs personnalisables :
+- Champs personnalisables :
 Les différences entre fédérations peuvent être gérées via des fichiers additionnels sans modifier le cœur du modèle.
-	•	Séparation des couches :
+  - Séparation des couches :
 La logique métier est séparée de l’interface graphique grâce à l’architecture MVVM, ce qui permet de modifier les règles ou les traitements sans impacter l’UI.
-	•	Base de données relationnelle :
+- Base de données relationnelle :
 L’utilisation de SQLite et d’Entity Framework Core permet une migration simple vers une autre base de données ou une autre structure si nécessaire.
 
 Ainsi, notre projet peut être réutilisé ou étendu pour gérer d’autres fédérations avec un coût de modification tres petit.
@@ -52,14 +52,14 @@ S : Principe de Responsabilité Unique
 Ce principe dit qu’une classe ne doit avoir qu’une seule raison de changer donc une seule responsabilité.
 
 Dans notre projet :
-	•	Les Models représentent uniquement les données 
-	•	Les ViewModels gèrent la logique applicative et l’état de l’interface.
-	•	Les Views s’occupent de l’affichage et à l’interaction utilisateur.
+	- Les Models représentent uniquement les données 
+	- Les ViewModels gèrent la logique applicative et l’état de l’interface.
+	- Les Views s’occupent de l’affichage et à l’interaction utilisateur.
 
 O : Principe Ouvert/Fermé (OCP)
 Ce principe indique qu’une entité logicielle doit être ouverte à l’extension, mais fermée à la modification.
 Dans notre projet :
-	•	L’ajout de nouvelles informations sur les joueurs se fait via des champs personnalisés, sans modifier la classe principale.
+	- 	L’ajout de nouvelles informations sur les joueurs se fait via des champs personnalisés, sans modifier la classe principale.
 
 
 ## Conclusion 
