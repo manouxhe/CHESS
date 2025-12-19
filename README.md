@@ -67,6 +67,14 @@ Dans notre projet :
 Pour conclure le projet a permis de créer une application structurée répondant à des besoins concrets de gestion dans le domaine des échecs.
 Grâce à l’utilisation de C#, Avalonia, SQLite, Entity Framework Core et au respect de principes de conception tels que MVVM et SOLID. Ce projet présente d'excellentes qualités de maintenabilité et d’adaptabilité.
 
+
+## Diagrammes 
+
+1) Diagramme de classe : https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flucid.app%2Flucidchart%2F337ae287-e9ca-4e75-9202-cfff94a394c7%2Fedit%3Fviewport_loc%3D2620%252C-3766%252C9511%252C4202%252C0_0%26invitationId%3Dinv_e5c6971d-d494-4715-895a-ae19f7f092b0&data=05%7C02%7C23346%40ecam.be%7C8e4db4fff28b458fe7ef08de3f40c1c1%7Ce3d6f09e9ba94a36ad75d9039be4fe29%7C0%7C0%7C639017744510503711%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=4mVoeZJjGEeLJJGLr%2Bw7t05HGJSWn6ZTHmfmTLftYuE%3D&reserved=0
+2) Diagramme d'activité : https://lucid.app/lucidchart/314e2741-4b90-4a1e-a1fe-aa56c77ee8ef/edit?viewport_loc=190%2C-689%2C1970%2C2702%2C0_0&invitationId=inv_4a4ed2df-1a5d-4ebe-a8bb-961a2f66afe7
+3) Diagramme de séquence : https://lucid.app/lucidchart/64743c52-2061-4bd2-86a7-f40089f3fb36/edit?invitationId=inv_6b7f402c-254b-4787-88a8-34ff56e382fb
+
+
 ## Bibliothèques utilisées
 
 - C# 
