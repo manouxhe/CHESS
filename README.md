@@ -38,7 +38,7 @@ Plusieurs points justifient cela :
 Les entités principales (joueurs, compétitions, matchs) sont indépendantes des règles spécifiques à une fédération donnée.
 - Champs personnalisables :
 Les différences entre fédérations peuvent être gérées via des fichiers additionnels sans modifier le cœur du modèle.
-  - Séparation des couches :
+- Séparation des couches :
 La logique métier est séparée de l’interface graphique grâce à l’architecture MVVM, ce qui permet de modifier les règles ou les traitements sans impacter l’UI.
 - Base de données relationnelle :
 L’utilisation de SQLite et d’Entity Framework Core permet une migration simple vers une autre base de données ou une autre structure si nécessaire.
