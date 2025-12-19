@@ -37,4 +37,11 @@ public partial class RankingViewModel : ViewModelBase
     {
         StringValue = _rankingModel.Value.ToString();
     }
+    public void Refresh()
+    {
+        StringValue = _rankingModel.Value.ToString();
+
+        //On notifie l'UI
+        OnPropertyChanged(nameof(StringValue));
+    }
 }

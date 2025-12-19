@@ -6,17 +6,16 @@ public partial class MainWindowViewModel : ViewModelBase
 {
     public PlayerListViewModel PlayerList { get; }
     public ClassementViewModel Classement { get; }
-    public CompetitionListViewModel CompetitionList { get; }
 
     public MainWindowViewModel()
     {
         Game game = new Gamechess();
-        ICompetitionService competitionService = new CompetitionService();
+        Classement classementService = new ChessClassement();
 
-        PlayerList = new PlayerListViewModel(game);
+        Calculator chessCalc = new EloCalculator();
 
-        Classement = PlayerList.ClassementVM; 
+        PlayerList = new PlayerListViewModel(game, classementService, chessCalc);
 
-        CompetitionList = new CompetitionListViewModel(competitionService);
+        Classement = PlayerList.ClassementVM;
     }
 }

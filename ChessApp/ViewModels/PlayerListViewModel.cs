@@ -20,6 +20,7 @@ public partial class PlayerListViewModel : ViewModelBase
     public ObservableCollection<FieldViewModel> CustomFields { get; } = new();
     public ObservableCollection<PlayerViewModel> FilteredPlayers { get; } = new();
     public ClassementViewModel ClassementVM { get; } = new ClassementViewModel(new ChessClassement());
+    public CompetitionListViewModel CompetitionList { get; }
 
     // La méthode passée en Action aux enfants
     private void OnPlayerInfoChanged()
@@ -30,7 +31,8 @@ public partial class PlayerListViewModel : ViewModelBase
     public PlayerListViewModel()
     {
         _game = new Gamechess();
-
+        ClassementVM = new ClassementViewModel(new ChessClassement());
+        CompetitionList = new CompetitionListViewModel(this, new CompetitionService(), new EloCalculator());
         // Données pour le designer Avalonia, comme dans la ToDoList
         if (Design.IsDesignMode)
         {
@@ -60,9 +62,11 @@ public partial class PlayerListViewModel : ViewModelBase
         }
     }
 
-    public PlayerListViewModel(Game game)
+    public PlayerListViewModel(Game game, Classement classement, Calculator calculator)
     {
         _game = game;
+        ClassementVM = new ClassementViewModel(classement);
+        CompetitionList = new CompetitionListViewModel(this, new CompetitionService(), calculator);
         foreach (var field in _game.GetFields())
         {
             field.PropertyChanged += (s, e) =>

@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace ChessApp.Views;
 
-public partial class CompetitionView : UserControl
+public partial class CompetitionListView : UserControl
 {
-    public CompetitionView()
+    public CompetitionListView()
     {
         InitializeComponent();
     }

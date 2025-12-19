@@ -1,0 +1,185 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ChessApp.ViewModels"
+             x:Class="ChessApp.Views.CompetitionListView"
+             x:DataType="vm:CompetitionListViewModel">
+    <Grid RowDefinitions="Auto, *">
+        
+        <Expander Grid.Row="0" Header="Inscrire une nouvelle compétition" Margin="10">
+            <StackPanel Spacing="10" Margin="10">
+                <TextBox Text="{Binding NewName}" Watermark="Nom de la compétition"/>
+                
+                <Grid ColumnDefinitions="*, 10, *">
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Date de début :" FontSize="12" Margin="0,0,0,5"/>
+                        <CalendarDatePicker SelectedDate="{Binding NewStart, Mode=TwoWay}" 
+                                            HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Date de fin :" FontSize="12" Margin="0,0,0,5"/>
+                        <CalendarDatePicker SelectedDate="{Binding NewEnd, Mode=TwoWay}" 
+                                            HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </Grid>
+
+                <TextBox Text="{Binding NewLocation}" Watermark="Localisation / Lieu"/>
+                
+                <Button Content="Ajouter la compétition" 
+                        Command="{Binding AddCompetitionCommand}" 
+                        HorizontalAlignment="Stretch"/>
+            </StackPanel>
+        </Expander>
+
+        <ListBox Grid.Row="1" ItemsSource="{Binding Competitions}" Margin="10" Background="Transparent">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="vm:CompetitionViewModel">
+                    <Expander HorizontalAlignment="Stretch" Margin="0,2">
+                        
+                        <Expander.Header>
+                            <Grid ColumnDefinitions="Auto, *, Auto">
+                                <TextBlock Text="{Binding Id, StringFormat='ID: {0}'}" 
+                                           VerticalAlignment="Center" Margin="0,0,10,0" Opacity="0.6"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Name}" 
+                                           FontWeight="Bold" VerticalAlignment="Center"/>
+                                <Button Grid.Column="2" 
+                                        Command="{Binding $parent[ListBox].((vm:CompetitionListViewModel)DataContext).DeleteCompetitionCommand}" 
+                                        CommandParameter="{Binding .}" 
+                                        Background="Transparent" BorderThickness="0">
+                                    <PathIcon Data="{StaticResource DeleteIconData}" Foreground="Red" Height="15"/>
+                                </Button>
+                            </Grid>
+                        </Expander.Header>
+
+                        <StackPanel Spacing="20" Margin="5">
+                            <StackPanel Spacing="8">
+                                <TextBox Text="{Binding Name}" Watermark="Nom de la compétition"/>
+                                <Grid ColumnDefinitions="*, 10, *">
+                                    <CalendarDatePicker Grid.Column="0" SelectedDate="{Binding StartDate}" 
+                                                        HorizontalAlignment="Stretch" Watermark="Début"/>
+                                    <CalendarDatePicker Grid.Column="2" SelectedDate="{Binding EndDate}" 
+                                                        HorizontalAlignment="Stretch" Watermark="Fin"/>
+                                </Grid>
+                                <TextBox Text="{Binding Location}" Watermark="Lieu"/>
+                            </StackPanel>
+
+                            <Separator Height="1" Background="LightGray"/>
+
+                            <Grid ColumnDefinitions="*, 40, *">
+                                
+                                <StackPanel Grid.Column="0" Spacing="10">
+                                    <TextBlock Text="Gestion des Participants" FontWeight="SemiBold" FontSize="14"/>
+                                    
+                                    <TextBox Text="{Binding SearchPlayerText}" Watermark="Chercher un membre..."/>
+                                    
+                                    <ListBox ItemsSource="{Binding SearchPlayers}" Height="120">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate DataType="vm:PlayerViewModel">
+                                                <Button Command="{Binding $parent[ListBox].((vm:CompetitionViewModel)DataContext).AddPlayerToCompCommand}"
+                                                        CommandParameter="{Binding .}" 
+                                                        HorizontalAlignment="Stretch" Background="Transparent">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding FirstName}" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="{Binding LastName}" FontWeight="Bold"/>
+                                                    </StackPanel>
+                                                </Button>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+
+                                    <TextBlock Text="Inscrits à cette compétition :" FontSize="12" Margin="0,5,0,0"/>
+                                    <ListBox ItemsSource="{Binding inscritPlayers}" Height="120">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate DataType="vm:PlayerViewModel">
+                                                <Grid ColumnDefinitions="*, Auto">
+                                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding FirstName}" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="{Binding LastName}" FontWeight="Bold"/>
+                                                    </StackPanel>
+                                                    <Button Grid.Column="1" Content="Retirer" 
+                                                            Command="{Binding $parent[ListBox].((vm:CompetitionViewModel)DataContext).RemovePlayerFromCompCommand}"
+                                                            CommandParameter="{Binding .}"
+                                                            Foreground="Red" FontSize="10"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2" Spacing="10">
+                                    <TextBlock Text="Gestion des Rencontres" FontWeight="SemiBold" FontSize="14"/>
+                                    
+                                    <TextBlock Text="⚠️ Sélectionnez 2 participants et les points" 
+                                               Foreground="Red" FontSize="11"
+                                               IsVisible="{Binding !CreateMatchCommand.CanExecute}"
+                                               HorizontalAlignment="Center"/>
+
+                                    <Grid ColumnDefinitions="*, 65">
+                                        <ComboBox Grid.Column="0" ItemsSource="{Binding inscritPlayers}" 
+                                                  SelectedItem="{Binding SelectedFirstPlayer}" 
+                                                  HorizontalAlignment="Stretch" PlaceholderText="Participant 1">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate DataType="vm:PlayerViewModel">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding FirstName}" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="{Binding LastName}"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                        <ComboBox Grid.Column="1" ItemsSource="{Binding ScoreOptions}" 
+                                                  SelectedItem="{Binding SelectedFirstScore}" 
+                                                  Margin="5,0,0,0" PlaceholderText="Pts"/>
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*, 65">
+                                        <ComboBox Grid.Column="0" ItemsSource="{Binding inscritPlayers}" 
+                                                  SelectedItem="{Binding SelectedSecondPlayer}" 
+                                                  HorizontalAlignment="Stretch" PlaceholderText="Participant 2">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate DataType="vm:PlayerViewModel">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding FirstName}" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="{Binding LastName}"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                        <ComboBox Grid.Column="1" ItemsSource="{Binding ScoreOptions}" 
+                                                  SelectedItem="{Binding SelectedSecondScore}" 
+                                                  Margin="5,0,0,0" PlaceholderText="Pts"/>
+                                    </Grid>
+
+                                    <Button Content="Valider le résultat" 
+                                            Command="{Binding CreateMatchCommand}" 
+                                            HorizontalAlignment="Stretch"/>
+                                    
+                                    <Separator Height="1" Margin="0,5"/>
+
+                                    <ListBox ItemsSource="{Binding Matches.Matches}" Height="180" Background="Transparent">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate DataType="vm:MatchViewModel">
+                                                <Expander HorizontalAlignment="Stretch" Margin="0,2">
+                                                    <Expander.Header>
+                                                        <TextBlock Text="{Binding Result}" FontWeight="SemiBold"/>
+                                                    </Expander.Header>
+                                                    <StackPanel Spacing="5" Margin="5">
+                                                        <TextBlock Text="Notes / Notation de la rencontre :" FontSize="11" Foreground="Gray"/>
+                                                        <TextBox Text="{Binding Moves}" 
+                                                                 AcceptsReturn="True" 
+                                                                 Height="80" 
+                                                                 Watermark="Saisir les détails de la rencontre..." 
+                                                                 TextWrapping="Wrap"/>
+                                                    </StackPanel>
+                                                </Expander>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Expander>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>

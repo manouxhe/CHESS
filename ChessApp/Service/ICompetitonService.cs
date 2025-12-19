@@ -7,9 +7,9 @@ namespace ChessApp.Service;
 // juste la liste des fcts que le service doit avoir
 public interface ICompetitionService
 {
-    Competition CreateCompetition(string name, DateTime date, string location); // creer une compet
+    Competition CreateCompetition(string name, DateTime? start, DateTime? end, string location); // creer une compet
 
-    void DeleteCompetition(Guid id); // supprimer via id
+    void DeleteCompetition(int id); // supprimer via id
 
     List<Competition> GetCompetitions(); // renv toutes les compet
 

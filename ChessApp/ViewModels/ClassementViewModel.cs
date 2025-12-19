@@ -24,10 +24,10 @@ public partial class ClassementViewModel : ViewModelBase
     public ObservableCollection<ClassementItemViewModel> Items { get; } = new();
 
     [ObservableProperty]
-    private string _CategoryKey = "";
+    private string? _CategoryKey;
 
     [ObservableProperty]
-    private string _CategoryName = "Général";
+    private string? _CategoryName;
 
     [ObservableProperty]
     private string? _searchText;

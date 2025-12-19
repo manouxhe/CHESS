@@ -1,9 +1,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using ChessApp.Models;
+using System.Collections.Generic;
+using System;
 
 namespace ChessApp.ViewModels;
 
-// viewmodel pour une seule partie
 public partial class MatchViewModel : ViewModelBase
 {
     private readonly Match _matchModel;
@@ -12,22 +13,21 @@ public partial class MatchViewModel : ViewModelBase
     {
         _matchModel = matchModel;
         _result = matchModel.Result;
+        _moves = string.Join("\n", matchModel.Moves);
     }
 
-    // joueurs (lecture seule pour la vue)
-    public Player? WhitePlayer => _matchModel.WhitePlayer;
-    public Player? BlackPlayer => _matchModel.BlackPlayer;
+    public Player? FirstParticipant => _matchModel.WhitePlayer;
+    public Player? SecondParticipant => _matchModel.BlackPlayer;
 
-    // resultat du match 
-    [ObservableProperty]
-    private string _result;
+    [ObservableProperty] private string _result;
+    [ObservableProperty] private string _moves;
 
-    // synchro vm -> model
-    partial void OnResultChanged(string value)
+    partial void OnResultChanged(string value) => _matchModel.Result = value;
+
+    partial void OnMovesChanged(string value)
     {
-        _matchModel.Result = value;
+        _matchModel.Moves = new List<string>(
+            value.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
+        );
     }
-
-    // acces au model si besoin plus tard
-    public Match Model => _matchModel;
 }

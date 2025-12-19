@@ -12,6 +12,8 @@ public class Match
 
     public string Result { get; set; } = "Not played";
     // par défaut
+    public double? WhiteScore { get; set; }
+    public double? BlackScore { get; set; }
 
     public List<string> Moves { get; set; } = new List<string>();   //stocker chaque moov sous forme de texte position pion (match.Moves.Add("e4");)
 }

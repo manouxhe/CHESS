@@ -3,36 +3,34 @@ using ChessApp.Models;
 
 namespace ChessApp.Service;
 
-// calc du elo apres un match
-public static class EloCalculator
+public class EloCalculator : Calculator
 {
-    // choisit le k selon regles 
-    private static int GetK(Player p, Ranking r)
+    public string GetRankingKey() => "ELO_FIDE";
+
+    public void UpdateRankings(Player p1, Player p2, double score1, double score2)
     {
-        // si peu de matchs moins de 30 : k = 40
-        if (p.MatchCount < 30)
-            return 40;
+        if (p1.Rankings.TryGetValue(GetRankingKey(), out var r1) &&
+            p2.Rankings.TryGetValue(GetRankingKey(), out var r2))
+        {
+            // Logique spécifique ELO
+            int k1 = GetK(p1, r1);
+            int k2 = GetK(p2, r2);
 
-        // si tres fort joueur : k = 10
-        if (r.Value >= 2400)
-            return 10;
+            double expected1 = 1.0 / (1 + Math.Pow(10, (r2.Value - r1.Value) / 400.0));
+            double expected2 = 1.0 / (1 + Math.Pow(10, (r1.Value - r2.Value) / 400.0));
 
-        // sinon valeur standard
-        return 20;
+            r1.Value += (int)Math.Round(k1 * (score1 - expected1));
+            r2.Value += (int)Math.Round(k2 * (score2 - expected2));
+
+            p1.MatchCount++;
+            p2.MatchCount++;
+        }
     }
 
-    // met a jour le elo d un joueur
-    public static void UpdateElo(Player p, Ranking rankingPlayer, Ranking rankingOpp, double score)
+    private int GetK(Player p, Ranking r)
     {
-        int k = GetK(p, rankingPlayer);
-
-        double expected = 1.0 / (1 + Math.Pow(10, (rankingOpp.Value - rankingPlayer.Value) / 400.0));
-
-        double newElo = rankingPlayer.Value + k * (score - expected);
-
-        rankingPlayer.Value = (int)Math.Round(newElo);
-
-        // on incremente nb matchs du joueur
-        p.MatchCount++;
+        if (p.MatchCount < 30) return 40;
+        if (r.Value >= 2400) return 10;
+        return 20;
     }
 }

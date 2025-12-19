@@ -11,6 +11,8 @@ namespace ChessApp.ViewModels;
 public partial class CompetitionListViewModel : ViewModelBase
 {
     private readonly ICompetitionService _competitionService;
+    private readonly PlayerListViewModel _playerListVM;
+    private readonly Calculator _calculator;
 
     // liste observable des competitions
     public ObservableCollection<CompetitionViewModel> Competitions { get; } = new();
@@ -19,51 +21,46 @@ public partial class CompetitionListViewModel : ViewModelBase
     private CompetitionViewModel? _selectedCompetition;
 
     // champs pour creer une nouvelle competition
-    [ObservableProperty]
-    private string? _newCompetitionName;
+    [ObservableProperty] private string? _newName;
+    [ObservableProperty] private DateTime? _newStart;
+    [ObservableProperty] private DateTime? _newEnd;
+    [ObservableProperty] private string? _newLocation;
 
-    [ObservableProperty]
-    private DateTimeOffset? _newCompetitionDate;
-
-    [ObservableProperty]
-    private string? _newCompetitionLocation;
-
-    public CompetitionListViewModel(ICompetitionService competitionService)
+    public CompetitionListViewModel(PlayerListViewModel playerListVM, ICompetitionService competitionService, Calculator calculator)
     {
+        _playerListVM = playerListVM;
         _competitionService = competitionService;
-
-        // chargement initial des competitions
-        foreach (var comp in _competitionService.GetCompetitions())
-        {
-            Competitions.Add(
-                new CompetitionViewModel(comp, _competitionService)
-            );
-        }
+        _calculator = calculator;
     }
 
     // commande pour creer une competition
     [RelayCommand]
     private void AddCompetition()
     {
-        if (string.IsNullOrWhiteSpace(NewCompetitionName)
-            || NewCompetitionDate == null
-            || string.IsNullOrWhiteSpace(NewCompetitionLocation))
+        if (string.IsNullOrWhiteSpace(NewName) || _competitionService == null || _playerListVM == null)
             return;
 
         var comp = _competitionService.CreateCompetition(
-            NewCompetitionName,
-            NewCompetitionDate.Value.DateTime,
-            NewCompetitionLocation
+            NewName,
+            NewStart,
+            NewEnd, 
+            NewLocation ?? ""
         );
 
-        var vm = new CompetitionViewModel(comp, _competitionService);
+        var vm = new CompetitionViewModel(comp, _competitionService,  _playerListVM.FilteredPlayers, _calculator);
         Competitions.Add(vm);
 
-        SelectedCompetition = vm;
-
-        // reset des champs
-        NewCompetitionName = null;
-        NewCompetitionDate = null;
-        NewCompetitionLocation = null;
+        NewName = null;
+        NewLocation = null;
+        NewStart = null; 
+        NewEnd = null;
     }
+
+    [RelayCommand]
+    private void DeleteCompetition(CompetitionViewModel vm)
+    {
+        _competitionService.DeleteCompetition(vm.Id);
+        Competitions.Remove(vm);
+    }
+
 }

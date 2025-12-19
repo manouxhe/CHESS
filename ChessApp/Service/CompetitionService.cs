@@ -5,52 +5,31 @@ using ChessApp.Models;
 
 namespace ChessApp.Service;
 
-// ici le service qui gere vraiment les compet
 public class CompetitionService : ICompetitionService
 {
-    // liste interne pour stock les compet
     private readonly List<Competition> _competitions = new();
+    private int _nextId = 1;
 
-    public Competition CreateCompetition(string name, DateTime date, string location)
+    public Competition CreateCompetition(string name, DateTime? start, DateTime? end, string location)
     {
-        // creer la nouvelle compet
-        var newComp = new Competition(name, date, location);
-
-        // on l'ajoute a la liste interne
+        var newComp = new Competition(_nextId++, name, start, end, location);
         _competitions.Add(newComp);
-
-        // renv pour pouvoir l'utiliser direct
         return newComp;
     }
 
-    public void DeleteCompetition(Guid id)
+    public void DeleteCompetition(int id)
     {
-        // trouver la compet a suppr
         var toDelete = _competitions.FirstOrDefault(c => c.Id == id);
-
-        // si existe on retire
-        if (toDelete != null)
-            _competitions.Remove(toDelete);
+        if (toDelete != null) _competitions.Remove(toDelete);
     }
 
-    public List<Competition> GetCompetitions()
-    {
-        // renv la liste actuelle
-        return _competitions;
-    }
+    public List<Competition> GetCompetitions() => _competitions;
 
     public void RegisterPlayer(Competition competition, Player player)
     {
-        // on verif si le joueur pas deja dedans
-        if (!competition.Players.Contains(player))
-        {
+        if (!competition.Players.Any(p => p.Email == player.Email))
             competition.Players.Add(player);
-        }
     }
 
-    public void AddMatch(Competition competition, Match match)
-    {
-        // ajout du match dans la compet
-        competition.Matches.Add(match);
-    }
+    public void AddMatch(Competition competition, Match match) => competition.Matches.Add(match);
 }

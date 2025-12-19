@@ -12,6 +12,7 @@ public partial class PlayerViewModel : ViewModelBase
 {
 
     private readonly Player _playerModel;
+    public Player PlayerModel => _playerModel;
     private readonly Action? _onInfoChanged; //pour notifier un changement
 
     [ObservableProperty]
@@ -34,6 +35,7 @@ public partial class PlayerViewModel : ViewModelBase
             if (_playerModel.MatchCount != value)
             {
                 _playerModel.MatchCount = value;
+                OnPropertyChanged(nameof(MatchCount)); // Important ici aussi
             }
         }
     }
@@ -90,6 +92,17 @@ public partial class PlayerViewModel : ViewModelBase
         {
             _onInfoChanged?.Invoke();
         }
+    }
+    public void RefreshStats()
+    {
+        OnPropertyChanged(nameof(MatchCount));
+
+        foreach (var rankingVM in Rankings)
+        {
+            rankingVM.Refresh();
+        }
+
+        OnPropertyChanged(nameof(Rankings));
     }
 }
 

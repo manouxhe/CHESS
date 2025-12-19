@@ -11,9 +11,11 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         Game factory = new Gamechess();
+        Classement rankingRules = new ChessClassement();
+        Calculator calcul = new EloCalculator();
 
         // Création du ViewModel principal
-        _viewModel = new PlayerListViewModel(factory);
+        _viewModel = new PlayerListViewModel(factory, rankingRules, calcul);
 
         // Liaison entre la Vue et le ViewModel
         // Le DataContext est essentiel en MVVM : il relie la vue aux données.

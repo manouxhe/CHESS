@@ -167,7 +167,7 @@
         </TabItem>
 
         <TabItem Header="Compétition">
-            <TextBlock Text="La gestion des compétitions sera ici" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <ContentControl Content="{Binding CompetitionList}" />
         </TabItem>
 
     </TabControl> 

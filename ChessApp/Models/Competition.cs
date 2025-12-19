@@ -5,19 +5,25 @@ namespace ChessApp.Models;
 
 public class Competition
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public int Id { get; set; }
 
-    public string Name { get; set; }
-    public DateTime Date { get; set; }
-    public string Location { get; set; }
+    public string? Name { get; set; }
+    public DateTime? StartDate { get; set; }
+    public DateTime? EndDate { get; set; }
+    public string? Location { get; set; }
 
     public List<Player> Players { get; set; } = new List<Player>();   //Dès quon crée une nouvelle compétition on a doffice liste player /match/id
     public List<Match> Matches { get; set; } = new List<Match>();
 
-    public Competition(string name, DateTime date, string location)  //constructeur 
+    // Constructeur vide nécessaire pour plus tard (BDD)
+    public Competition() { }
+
+    public Competition(int id, string name, DateTime? start, DateTime? end, string location)
     {
+        Id = id;
         Name = name;
-        Date = date;
+        StartDate = start;
+        EndDate = end;
         Location = location;
     }
 }
