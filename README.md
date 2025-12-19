@@ -30,7 +30,7 @@ Notre fonctionnalité supplémentaire est la recherche de joueurs. Elle a été 
 Elle permet de filtrer rapidement les joueurs à partir de leur nom, améliorant ainsi l’ergonomie de l’application.
 La logique de recherche est gérée dans les ViewModels, conformément à l’architecture MVV.
 
-##Adaptabilité du projet à une autre fédération
+## Adaptabilité du projet à une autre fédération
 Notre projet a été conçu de manière à être facilement adaptable à une autre fédération d’échecs (ou à une organisation du même type).
 
 Plusieurs points justifient cela :
